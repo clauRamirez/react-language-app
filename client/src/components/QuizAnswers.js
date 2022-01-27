@@ -2,26 +2,21 @@ import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
+import QuizSubmitScore from "./QuizSubmitScore";
 
-const QuizAnswers = ({ answer,resetColour,setShowButton,setResetColour,currentQuiz,setShowScore,setCurrentScore,currentScore}) => {
-   
+const QuizAnswers = ({showQuestions,setShowQuestions,createUser, answer,resetColour,setShowButton,setResetColour,currentQuiz,setShowScore,setCurrentScore,currentScore,answerElement}) => {
+    
+    const [showUserSubmit,setShowUserSubmit] = useState(false)
     const [colour, setColour] = useState("primary");
     const [clickable,setClickable] = useState(false)
     const [showConfetti,setShowConfetti] = useState(null)
     const { width, height } = useWindowSize()
-    const confetti =<Confetti width={width} height={height} />
+    
+  
+    const confetti = <Confetti width={width} height={height} />
     
    
-   const button =()=>{return( <Button
-   className="btn-long"
-   variant={colour}
-   onClick={handleClick}
-   value={answer.isCorrect}    
-   disabled={clickable}     
-   >
-   {answer.text}
-   </Button>)}
-
+   
 
 
       
@@ -35,24 +30,27 @@ const QuizAnswers = ({ answer,resetColour,setShowButton,setResetColour,currentQu
         setClickable(true)
         if (currentQuiz == 3){
             if(event.target.value === "true") {
+                
+                setShowQuestions(false)
                 setColour("success");
                 setCurrentScore(currentScore + 3)
                 setShowScore(true)
                 setShowConfetti(true)
+                answerElement.setAttribute("class","no-click")
+                setShowUserSubmit(true)
                 
-
             } else if (event.target.value === "false") {
                 setColour("danger");
                 setCurrentScore(currentScore -1 )
             }
             setShowButton(false)
-            setShowScore(true)
+            
            
          }else if (event.target.value === "true") {
             setColour("success");
             setShowButton(true)
             setCurrentScore(currentScore + 3)
-            
+            answerElement.setAttribute("class","no-click")
         } else if (event.target.value === "false") {
             setColour("danger");
             setCurrentScore(currentScore -1 )
@@ -64,10 +62,25 @@ const QuizAnswers = ({ answer,resetColour,setShowButton,setResetColour,currentQu
     
     
     return (
+        
+        
         <div className="answers-container">
-            {button()}
-            {showConfetti ? confetti : null }
-        </div>
+        
+         {!showQuestions ?  <Button className="btn-long"
+            variant={colour}
+            onClick={handleClick}
+            value={answer.isCorrect}    
+            disabled={clickable}     
+                         >
+            {answer.text}
+            </Button>: null}
+        
+        {showQuestions?<h1>Submit Deatils</h1> : null }
+        {showConfetti ? confetti : null }
+        {showQuestions ? <QuizSubmitScore createUser={createUser,currentScore} /> : null }
+         </div>
+    
+
     );
 };
 

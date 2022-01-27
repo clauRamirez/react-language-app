@@ -3,8 +3,8 @@ import QuizButton from './QuizButton';
 import Quiz from './Quiz';
 
 
- const QuizList = ({quizzes}) => {
-  const [nextShow,setNextShow] =useState(false)
+ const QuizList = ({quizzes,createUser}) => {
+
   const [selectedQuiz, setSelectedQuiz] = useState(null)
   const [currentQuiz,setCurrentQuiz] = useState(0)
   
@@ -27,7 +27,7 @@ import Quiz from './Quiz';
        
         {!selectedQuiz ? quizButtonNodes : null}
         </div>
-        {selectedQuiz ? <Quiz quiz={selectedQuiz} currentQuiz ={currentQuiz} onClickNextQuiz={onClickNextQuiz}/> : null}
+        {selectedQuiz ? <Quiz createUser={createUser }quiz={selectedQuiz} currentQuiz ={currentQuiz} onClickNextQuiz={onClickNextQuiz}/> : null}
         
     </div>
   );

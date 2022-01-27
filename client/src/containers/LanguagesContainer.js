@@ -11,34 +11,45 @@ const LanguagesContainer = () => {
     
     const [allData,setAllData] = useState([])
     const [selectedLanguage,setSelectedLanguage] = useState(null)
-    const [UserData, setUserData] = useState([])
+    const [userData, setUserData] = useState([])
     
 useEffect(()=>{
       LanguagesService.getLanguages()
-    .then(allData => setAllData(allData))
+    .then(allData => setAllData(allData));LanguagesService.getUser().then(userData=>setUserData(userData))
+
 },[])
 
 const onClickLanguage = (language) =>{
    setSelectedLanguage(language)
 }
-
-const goMainPage = () =>{
-    setSelectedLanguage(null)
-}
-
 const handleHomeClick = ()=>{
     setSelectedLanguage(null)
+    document.getElementById("answer-click-div").setAttribute("class","click")
 }
+const createUser = newUser => {
+    LanguagesService.postUser(newUser)
+      .then(savedUser => setUserData([...userData, savedUser]))
+  }
   
-    return (
+  const deleteUser = idToDelete => {
+    LanguagesService.deleteUser(idToDelete)
+      .then(() => {
+        setUserData(userData.filter(user => user._id !== idToDelete))
+      })
+  }
+
+
+
+
+return (
  
 
 <Container fluid='md' className='main-container'>
 <Button className="btn btn-white-bg" onClick={handleHomeClick} >Home</Button>         
-        {!selectedLanguage ? <LanguageSelector allData={allData} onClickLanguage={onClickLanguage}/> : null}
-        {selectedLanguage ? <MainPage  selectedLanguage={selectedLanguage}/> : null }
+    {!selectedLanguage ? <LanguageSelector allData={allData} onClickLanguage={onClickLanguage}/> : null}
+    {selectedLanguage ? <MainPage  selectedLanguage={selectedLanguage} userData = {userData} deleteUser={deleteUser} createUser={createUser}/> : null }
 
-        
+     
 </Container>
 
  

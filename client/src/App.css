@@ -119,16 +119,16 @@ p {
 }
 
 .btn-white-bg:focus {
-    outline: none !important;
-    box-shadow: none !important;
-  }
+  outline: none !important;
+  box-shadow: none !important;
+}
 
 .quiz {
   text-align: center;
 }
 
 .card-border {
-    border: 1px solid rgba(66, 89, 122, 0.151);
+  border: 1px solid rgba(66, 89, 122, 0.151);
 }
 
 .quiz-card {
@@ -142,4 +142,8 @@ p {
 .score-container {
   text-align: center;
   margin-top: 35px;
+}
+
+.no-click {
+  pointer-events: none;
 }
